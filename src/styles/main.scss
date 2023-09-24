@@ -1,0 +1,53 @@
+@font-face {
+  font-family: 'font-main';
+  src: url(../assets/OpenSans-VariableFont_wdth/wght.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'font-secondary';
+  src: url(../assets/Anton-Regular.ttf) format('truetype');
+}
+
+:root {
+  --color-accent__main: grey;
+  --color-accent__secondary: rgb(66, 66, 66);
+  --color-font__main: black;
+  --color-font__secondary: grey;
+}
+
+body {
+  font-family: 'font-main', sans-serif;
+  color: var(--color-font__main);
+}
+
+img {
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'font-secondary', sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+
+main {
+  width: 80%;
+  margin: 0 auto;
+  height: 80vh;
+  border: 2px solid grey;
+}
+
+dialog[open] {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.personalPhoto {
+  width: 150px;
+}
