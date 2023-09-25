@@ -1,8 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCoffee } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 
-function General() {
+// eslint-disable-next-line react/prop-types
+function General({activeDialog, setActiveDialog}) {
   const [values, setValues] = useState({
     nameValue: 'Name',
     telValue: null,
@@ -21,14 +22,12 @@ function General() {
     setInputValues({ ...inputValues, [name]: value });
   };
 
-  const [dialogOpen, setDialogOpen] = useState(false);
-
   const openDialog = () => {
-    setDialogOpen(true);
+    setActiveDialog([true, false]);
   };
 
   const closeDialog = () => {
-    setDialogOpen(false);
+    setActiveDialog([false, false]);
   };
 
   const useSubmit = () => {
@@ -53,9 +52,9 @@ function General() {
         className='personalPhoto'
       />
       <button onClick={openDialog}>
-        <FontAwesomeIcon icon={faCoffee} />
+        <FontAwesomeIcon icon={faPenToSquare} />
       </button>
-      <dialog open={dialogOpen}>
+      <dialog open={activeDialog[0]}>
         <label>
           Fill your name:{' '}
           <input
