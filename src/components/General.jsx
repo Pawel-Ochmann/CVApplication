@@ -23,11 +23,11 @@ function General({activeDialog, setActiveDialog}) {
   };
 
   const openDialog = () => {
-    setActiveDialog([true, false]);
+    setActiveDialog([true, false, false]);
   };
 
   const closeDialog = () => {
-    setActiveDialog([false, false]);
+    setActiveDialog([false, false, false]);
   };
 
   const useSubmit = () => {

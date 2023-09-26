@@ -26,12 +26,12 @@ function Education({ activeDialog, setActiveDialog }) {
   const [editActive, setEditActive] = useState(0);
 
   const openDialog = () => {
-    setActiveDialog([false, true]);
+    setActiveDialog([false, true, false]);
   };
 
   const closeDialog = () => {
     setMinMonth('');
-    setActiveDialog([false, false]);
+    setActiveDialog([false, false, false]);
   };
 
   const useSubmit = (e) => {
