@@ -6,8 +6,8 @@ import { useState } from 'react';
 function General({activeDialog, setActiveDialog}) {
   const [values, setValues] = useState({
     nameValue: 'Name',
-    telValue: null,
-    emailValue: null,
+    telValue: '',
+    emailValue: '',
     addressValue: './face.png',
   });
   const [inputValues, setInputValues] = useState({

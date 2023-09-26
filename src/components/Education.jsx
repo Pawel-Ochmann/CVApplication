@@ -1,39 +1,46 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPenToSquare,
+  faTrash,
+  faPlus,
+} from '@fortawesome/free-solid-svg-icons';
 import { useState, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
+// eslint-disable-next-line react/prop-types
 function Education({ activeDialog, setActiveDialog }) {
+  const date = new Date();
+  let month = date.getMonth() + 1;
+  if (month < 10) month = 0 + month.toString();
+  const maxMonth = date.getFullYear() + '-' + month;
+
+  const [minMonth, setMinMonth] = useState('');
   const [schoolList, setSchoolList] = useState([]);
-  const [inputValues, setInputValues] = useState({ name: '', years: '' });
+  const [inputValues, setInputValues] = useState({
+    name: '',
+    startYear: '',
+    endYear: '',
+  });
+  const [pendingSchools, setPendingSchools] = useState([]);
 
   const openDialog = () => {
     setActiveDialog([false, true]);
   };
 
   const closeDialog = () => {
+    setMinMonth('');
     setActiveDialog([false, false]);
   };
 
   const useSubmit = (e) => {
-    const nameInput = nameRef.current;
-    nameInput.setCustomValidity('');
     e.preventDefault();
 
-    if (!nameInput.checkValidity()) {
-      nameInput.setCustomValidity(
-        'First we need the name of the school You graduated'
-      );
-      nameInput.reportValidity();
-      return;
+    if (pendingSchools.length > 0) {
+      setSchoolList([...pendingSchools]);
     }
-    setSchoolList([
-      ...schoolList,
-      { id: uuidv4(), name: inputValues.name, years: inputValues.years },
-    ]);
-    setInputValues({ name: '', years: '' });
+
+    setInputValues({ name: '', startYear: '', endYear: '' });
     closeDialog();
-    console.log(schoolList);
   };
 
   const fillInput = (e) => {
@@ -41,13 +48,74 @@ function Education({ activeDialog, setActiveDialog }) {
     setInputValues({ ...inputValues, [name]: value });
   };
 
-  const editSchool = () => {
-    return true;
+  const handleMinMonth = (e) => {
+    setMinMonth(e.target.value);
   };
 
+  const editSchool = (schoolId) => {
+    const schoolIndex = pendingSchools.findIndex((e) => {
+      return e.id === schoolId;
+    });
+    const updatedSchool = { ...pendingSchools[schoolIndex], readOnly: false };
+    const updatedSchoolList = [...pendingSchools];
+    updatedSchoolList[schoolIndex] = updatedSchool;
+    setPendingSchools(updatedSchoolList);
+  };
+  // const editSchoolEnd = (schoolId) => {
+  //   const schoolIndex = schoolList.findIndex((e) => {
+  //     return e.id === schoolId;
+  //   });
+  //   const updatedSchool = { ...schoolList[schoolIndex], disabled: false };
+  //   console.log(updatedSchool);
+  //   const updatedSchoolList = [...schoolList];
+  //   updatedSchoolList[schoolIndex] = updatedSchool;
+  //   setSchoolList(updatedSchoolList);
+  // };
+
   const deleteSchool = (schoolId) => {
-    const newSchoolArray = [...schoolList].filter(school => school.id !== schoolId);
-    setSchoolList(newSchoolArray);
+    const newSchoolArray = [...pendingSchools].filter(
+      (school) => school.id !== schoolId
+    );
+    setPendingSchools(newSchoolArray);
+  };
+
+  const addSchool = () => {
+    const nameInput = nameRef.current;
+    nameInput.setCustomValidity('');
+    if (!nameInput.checkValidity()) {
+      nameInput.setCustomValidity(
+        'First we need the name of the school You graduated'
+      );
+      nameInput.reportValidity();
+      return;
+    }
+    setMinMonth('');
+
+    setPendingSchools([
+      ...pendingSchools,
+      {
+        id: uuidv4(),
+        name: inputValues.name,
+        startYear: inputValues.startYear,
+        endYear: inputValues.endYear,
+        readOnly: true,
+      },
+    ]);
+    setInputValues({ name: '', startYear: '', endYear: '' });
+  };
+
+  const fillSchoolInput = (e, schoolId) => {
+    const { name, value } = e.target;
+    const schoolIndex = pendingSchools.findIndex((e) => {
+      return e.id === schoolId;
+    });
+    const updatedSchool = {
+      ...pendingSchools[schoolIndex],
+      [name]: value,
+    };
+    const updatedSchoolList = [...pendingSchools];
+    updatedSchoolList[schoolIndex] = updatedSchool;
+    setPendingSchools(updatedSchoolList);
   };
 
   const nameRef = useRef(null);
@@ -56,33 +124,78 @@ function Education({ activeDialog, setActiveDialog }) {
     <div className='education'>
       <table>
         <caption>Education</caption>
-        <tr>
-          <th>School</th>
-          <th>Years</th>
-        </tr>
-        {schoolList.map((school) => {
-          return (
-            <tr key={school.id}>
-              <td>{school.name}</td>
-              <td>{school.years}</td>
-            </tr>
-          );
-        })}
+        <thead>
+          <tr>
+            <th>School</th>
+            <th>Start</th>
+            <th>Finished</th>
+          </tr>
+        </thead>
+        <tbody>
+          {schoolList.map((school) => {
+            return (
+              <tr key={school.id}>
+                <td>{school.name}</td>
+                <td>{school.startYear}</td>
+                <td>{school.endYear}</td>
+              </tr>
+            );
+          })}
+        </tbody>
       </table>
       <button onClick={openDialog}>
         <FontAwesomeIcon icon={faPenToSquare} />
       </button>
       <dialog open={activeDialog[1]}>
-        {schoolList.map((school) => {
+        {pendingSchools.map((school) => {
           return (
-            <div className='schoolBox' key={uuidv4()}>
-              <input type='text' disabled value={school.name} />
-              <input type='text' disabled value={school.years} />
-              <button onClick={()=> {editSchool(school.id)}}>
+            <div className='schoolBox' key={school.id}>
+              <input
+                key={school.id}
+                name='name'
+                type='text'
+                readOnly={school.readOnly}
+                value={school.name}
+                onChange={(e) => {
+                  fillSchoolInput(e, school.id);
+                }}
+              />
+              <label>
+                Started:{' '}
+                <input
+                  key={school.id}
+                  name='startYear'
+                  type='month'
+                  readOnly={school.readOnly}
+                  value={school.startYear}
+                  onChange={(e) => {
+                    fillSchoolInput(e, school.id);
+                    handleMinMonth(e);
+                  }}
+                />
+              </label>
+              <label>
+                Finished:{' '}
+                <input
+                  key={school.id}
+                  name='endYear'
+                  type='month'
+                  readOnly={school.readOnly}
+                  value={school.endYear}
+                  onChange={(e) => {
+                    fillSchoolInput(e, school.id);
+                  }}
+                />
+              </label>
+              <button
+                onClick={() => {
+                  editSchool(school.id);
+                }}
+              >
                 <FontAwesomeIcon icon={faPenToSquare} />
               </button>
-              <button onClick={()=> deleteSchool(school.id)}>
-                <FontAwesomeIcon icon={faTrash}/>
+              <button onClick={() => deleteSchool(school.id)}>
+                <FontAwesomeIcon icon={faTrash} />
               </button>
             </div>
           );
@@ -100,14 +213,31 @@ function Education({ activeDialog, setActiveDialog }) {
             />
           </label>
           <label>
-            Years: {''}
+            Commencement:
             <input
-              type='text'
-              name='years'
-              value={inputValues.years}
+              type='month'
+              max={maxMonth}
+              name='startYear'
+              value={inputValues.startYear}
+              onChange={(e) => {
+                fillInput(e), handleMinMonth(e);
+              }}
+            />
+          </label>
+          <label>
+            Graduation:
+            <input
+              type='month'
+              max={maxMonth}
+              min={minMonth}
+              name='endYear'
+              value={inputValues.endYear}
               onChange={fillInput}
             />
           </label>
+          <button>
+            <FontAwesomeIcon icon={faPlus} onClick={addSchool} />
+          </button>
         </div>
         <button onClick={useSubmit}>Submit</button>
         <button onClick={closeDialog}>Close</button>
