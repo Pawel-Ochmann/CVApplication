@@ -3,6 +3,7 @@ import {
   faPenToSquare,
   faTrash,
   faPlus,
+  faCheck,
 } from '@fortawesome/free-solid-svg-icons';
 import { useState, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -22,6 +23,7 @@ function Education({ activeDialog, setActiveDialog }) {
     endYear: '',
   });
   const [pendingSchools, setPendingSchools] = useState([]);
+  const [editActive, setEditActive] = useState(0);
 
   const openDialog = () => {
     setActiveDialog([false, true]);
@@ -35,9 +37,7 @@ function Education({ activeDialog, setActiveDialog }) {
   const useSubmit = (e) => {
     e.preventDefault();
 
-    if (pendingSchools.length > 0) {
-      setSchoolList([...pendingSchools]);
-    }
+    setSchoolList([...pendingSchools]);
 
     setInputValues({ name: '', startYear: '', endYear: '' });
     closeDialog();
@@ -52,7 +52,7 @@ function Education({ activeDialog, setActiveDialog }) {
     setMinMonth(e.target.value);
   };
 
-  const editSchool = (schoolId) => {
+  const editSchoolStart = (schoolId) => {
     const schoolIndex = pendingSchools.findIndex((e) => {
       return e.id === schoolId;
     });
@@ -60,17 +60,27 @@ function Education({ activeDialog, setActiveDialog }) {
     const updatedSchoolList = [...pendingSchools];
     updatedSchoolList[schoolIndex] = updatedSchool;
     setPendingSchools(updatedSchoolList);
+    setEditActive(schoolId);
+    console.log('edit start');
   };
-  // const editSchoolEnd = (schoolId) => {
-  //   const schoolIndex = schoolList.findIndex((e) => {
-  //     return e.id === schoolId;
-  //   });
-  //   const updatedSchool = { ...schoolList[schoolIndex], disabled: false };
-  //   console.log(updatedSchool);
-  //   const updatedSchoolList = [...schoolList];
-  //   updatedSchoolList[schoolIndex] = updatedSchool;
-  //   setSchoolList(updatedSchoolList);
-  // };
+  const editSchoolEnd = (schoolId) => {
+    const schoolIndex = pendingSchools.findIndex((e) => {
+      return e.id === schoolId;
+    });
+    const updatedSchool = { ...pendingSchools[schoolIndex], readOnly: true };
+    const updatedSchoolList = [...pendingSchools];
+    updatedSchoolList[schoolIndex] = updatedSchool;
+    setPendingSchools(updatedSchoolList);
+    setEditActive(0);
+    console.log('edit End');
+  };
+
+  const editSchool = (schoolId) => {
+    console.log(schoolId, editActive);
+    editActive === schoolId
+      ? editSchoolEnd(schoolId)
+      : editSchoolStart(schoolId);
+  };
 
   const deleteSchool = (schoolId) => {
     const newSchoolArray = [...pendingSchools].filter(
@@ -192,7 +202,12 @@ function Education({ activeDialog, setActiveDialog }) {
                   editSchool(school.id);
                 }}
               >
-                <FontAwesomeIcon icon={faPenToSquare} />
+                <FontAwesomeIcon
+                  icon={editActive === school.id ? faCheck : faPenToSquare}
+                  onClick={() => {
+                    editSchool(school.id);
+                  }}
+                />
               </button>
               <button onClick={() => deleteSchool(school.id)}>
                 <FontAwesomeIcon icon={faTrash} />

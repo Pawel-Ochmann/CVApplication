@@ -68,3 +68,7 @@ td {
 input[name='name'] {
   width: 100%;
 }
+
+.schoolBox  input:not([readOnly]) {
+  border: 2px solid green;
+}
