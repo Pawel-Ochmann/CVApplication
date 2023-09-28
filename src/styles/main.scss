@@ -82,3 +82,35 @@ input[name='name'] {
   align-items: center;
   justify-content: space-around;
 }
+.skill {
+  display: flex;
+  justify-content: flex-start;
+}
+
+@media print {
+  @page {
+    margin:0;
+  }
+
+  main {
+    border:none;
+  }
+
+  * {
+    overflow: hidden;
+  }
+
+  header, footer {
+    display: none;
+  }
+
+  main {
+    width: 100vw;
+    height: 100vh;
+    page-break-after: always;
+  }
+
+  button {
+    display: none;
+  }
+}

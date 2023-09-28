@@ -7,7 +7,11 @@ import Skills from './Skills';
 import Hobbies from './Hobbies';
 
 function Header() {
-  return <h1>Create Your Personal CV!</h1>;
+  return (
+    <header>
+      <h1>Create Your Personal CV!</h1>
+    </header>
+  );
 }
 
 function Main() {
