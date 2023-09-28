@@ -38,7 +38,6 @@ h1 {
 main {
   width: 80%;
   margin: 0 auto;
-  height: 80vh;
   border: 2px solid grey;
 }
 
@@ -76,4 +75,10 @@ input[name='name'] {
 .experience form {
   display: flex;
   flex-direction: column;
+}
+
+.job {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 }

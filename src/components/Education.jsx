@@ -26,12 +26,12 @@ function Education({ activeDialog, setActiveDialog }) {
   const [editActive, setEditActive] = useState(0);
 
   const openDialog = () => {
-    setActiveDialog([false, true, false]);
+    setActiveDialog([false, true, false, false, false]);
   };
 
   const closeDialog = () => {
     setMinMonth('');
-    setActiveDialog([false, false, false]);
+    setActiveDialog([false, false, false, false, false]);
   };
 
   const useSubmit = (e) => {
@@ -176,6 +176,7 @@ function Education({ activeDialog, setActiveDialog }) {
                   key={school.id}
                   name='startYear'
                   type='month'
+                  max={maxMonth}
                   readOnly={school.readOnly}
                   value={school.startYear}
                   onChange={(e) => {
@@ -190,6 +191,7 @@ function Education({ activeDialog, setActiveDialog }) {
                   key={school.id}
                   name='endYear'
                   type='month'
+                  max={maxMonth}
                   readOnly={school.readOnly}
                   value={school.endYear}
                   onChange={(e) => {
