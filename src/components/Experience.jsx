@@ -1,5 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlus,
+  faPenToSquare,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -48,10 +52,18 @@ function Experience({ activeDialog, setActiveDialog }) {
       return;
     }
     e.preventDefault();
-    setJobs([
+    const jobsToSet = sortJobs([
       ...jobs,
-      { name: pendingJob.name, start: pendingJob.start, end: pendingJob.end, duties: pendingJob.duties, id: uuidv4() },
+      {
+        name: pendingJob.name,
+        start: pendingJob.start,
+        end: pendingJob.end,
+        duties: pendingJob.duties,
+        id: uuidv4(),
+      },
     ]);
+
+    setJobs([...jobsToSet]);
 
     setPendingJob({
       name: '',
@@ -60,7 +72,39 @@ function Experience({ activeDialog, setActiveDialog }) {
       duties: '',
       id: '',
     });
+    setMinMonth('');
     closeDialog(e);
+  };
+
+  const deleteJob = (jobId) => {
+    const newJobArray = [...jobs].filter((job) => job.id !== jobId);
+    setJobs(newJobArray);
+  };
+
+  const editJob = (jobId) => {
+    const jobToEdit = jobs.find((job) => {
+      return job.id === jobId;
+    });
+    deleteJob(jobId);
+    setPendingJob({ ...jobToEdit });
+    openDialog();
+  };
+
+  const sortJobs = (jobsArray) => {
+    const jobsSorted = [...jobsArray].sort((jobA, jobB) => {
+      const endDateA = new Date(jobA.end);
+      const endDateB = new Date(jobB.end);
+
+      // Compare the end dates in descending order
+      if (endDateA < endDateB) {
+        return 1;
+      } else if (endDateA > endDateB) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+    return jobsSorted;
   };
 
   useEffect(() => {
@@ -141,19 +185,29 @@ function Experience({ activeDialog, setActiveDialog }) {
         </form>
       </dialog>
       <h3>Experience</h3>
-      <div className="jobsContainer">
-        {jobs.map((job)=> {
+      <div className='jobsContainer'>
+        {jobs.map((job) => {
           return (
             <div className='job' key={job.id}>
-              <h4>job.name</h4>
-              <p>job.start</p>
-              <p>jobs.end</p>
-              <p>jobs.duties</p>
+              <h4>{job.name}</h4>
+              <p>{job.start}</p>
+              <p>{job.end}</p>
+              <p>{job.duties}</p>
               <button>
-                <FontAwesomeIcon icon={faPenToSquare} />
+                <FontAwesomeIcon
+                  icon={faPenToSquare}
+                  onClick={() => {
+                    editJob(job.id);
+                  }}
+                />
               </button>
               <button>
-                <FontAwesomeIcon icon={faTrash} />
+                <FontAwesomeIcon
+                  icon={faTrash}
+                  onClick={() => {
+                    deleteJob(job.id);
+                  }}
+                />
               </button>
             </div>
           );
