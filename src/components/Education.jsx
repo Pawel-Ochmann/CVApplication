@@ -193,7 +193,7 @@ function Education({ activeDialog, setActiveDialog }) {
       <button className='change' onClick={openDialog}>
         <FontAwesomeIcon icon={faPenToSquare} />
       </button>
-      <dialog open={activeDialog[1]}>
+      <dialog className='dialogEducation' open={activeDialog[1]}>
         {pendingSchools.map((school) => {
           return (
             <div className='schoolBox' key={school.id}>

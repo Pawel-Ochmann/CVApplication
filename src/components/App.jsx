@@ -5,11 +5,18 @@ import Education from './Education';
 import Experience from './Experience';
 import Skills from './Skills';
 import Hobbies from './Hobbies';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPrint } from '@fortawesome/free-solid-svg-icons';
 
 function Header() {
+  const print = ()=> {
+    window.print();
+  }
+
   return (
     <header>
       <h1>Create Your Personal CV!</h1>
+      <p>...and click <button onClick={print}><FontAwesomeIcon icon={faPrint}></FontAwesomeIcon></button> when it is ready.</p>
     </header>
   );
 }

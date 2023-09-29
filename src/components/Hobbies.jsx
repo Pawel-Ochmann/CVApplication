@@ -6,7 +6,11 @@ import { v4 as uuidv4 } from 'uuid';
 // eslint-disable-next-line react/prop-types
 function Hobbies({ activeDialog, setActiveDialog }) {
   const [pendingHobbies, setPendingHobbies] = useState('');
-  const [hobbies, setHobbies] = useState([]);
+  const [hobbies, setHobbies] = useState([
+    { id: uuidv4(), hobby:'Photography' },
+    { id: uuidv4(), hobby: 'Hiking' },
+    { id: uuidv4(), hobby: 'Playing Chess' },
+  ]);
 
   const nameRef = useRef('');
 
@@ -34,7 +38,6 @@ function Hobbies({ activeDialog, setActiveDialog }) {
   };
 
   const deleteHobby = (hobbyId) => {
-    console.log('...deleting')
     const newHobbyArray = [...hobbies].filter((hobby) => hobby.id !== hobbyId);
     setHobbies(newHobbyArray);
   };
@@ -60,13 +63,13 @@ function Hobbies({ activeDialog, setActiveDialog }) {
           </button>
         </form>
       </dialog>
-      <h3>Hobbies</h3>
+      <h2>Hobbies</h2>
       <div className='hobbiesContainer'>
         {hobbies.map((hobby) => {
           return (
-            <div className='skill' key={hobby.id}>
-              <p>{hobby.hobby}</p>
-              <button>
+            <ul className='hobby' key={hobby.id}>
+              <li>{hobby.hobby}</li>
+              <button className='change'>
                 <FontAwesomeIcon
                   icon={faTrash}
                   onClick={() => {
@@ -74,11 +77,11 @@ function Hobbies({ activeDialog, setActiveDialog }) {
                   }}
                 />
               </button>
-            </div>
+            </ul>
           );
         })}
       </div>
-      <button onClick={openDialog}>
+      <button className='change' onClick={openDialog}>
         <FontAwesomeIcon icon={faPlus} />
       </button>
     </div>

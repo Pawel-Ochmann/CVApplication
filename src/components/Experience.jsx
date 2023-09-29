@@ -180,7 +180,7 @@ function Experience({ activeDialog, setActiveDialog }) {
               onChange={fillPending}
             />
           </label>
-          <label>
+          <label className='textarea'>
             Duties:{' '}
             <textarea
               value={pendingJob.duties}

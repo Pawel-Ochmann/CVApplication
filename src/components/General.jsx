@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 // eslint-disable-next-line react/prop-types
 function General({ activeDialog, setActiveDialog }) {
@@ -21,6 +21,8 @@ function General({ activeDialog, setActiveDialog }) {
       'I am a motivated and dedicated professional with a passion for programming. I am committed to achieving excellence in every project I undertake. Always cheerful and open to new experiences.',
   });
 
+  const nameRef = useRef(null);
+
   const fillInput = (e) => {
     const { name, value } = e.target;
     setInputValues({ ...inputValues, [name]: value });
@@ -30,12 +32,17 @@ function General({ activeDialog, setActiveDialog }) {
     setActiveDialog([true, false, false]);
   };
 
-  const closeDialog = () => {
+  const closeDialog = (e) => {
+    e.preventDefault();
     setActiveDialog([false, false, false]);
   };
 
-  const useSubmit = () => {
-    closeDialog();
+  const useSubmit = (e) => {
+    if (!nameRef.current.checkValidity()) {
+      nameRef.current.reportValidity();
+      return;
+    }
+    e.preventDefault();
     setValues({
       ...values,
       nameValue: inputValues.nameInput,
@@ -44,6 +51,7 @@ function General({ activeDialog, setActiveDialog }) {
       addressValue: inputValues.addressInput,
       aboutMe: inputValues.aboutMe,
     });
+    closeDialog(e);
   };
 
   return (
@@ -67,55 +75,61 @@ function General({ activeDialog, setActiveDialog }) {
         <FontAwesomeIcon icon={faPenToSquare} />
       </button>
       <dialog open={activeDialog[0]}>
-        <label>
-          Fill your name:{' '}
-          <input
-            type='text'
-            name='nameInput'
-            value={inputValues.nameInput}
-            onChange={fillInput}
-          />
-        </label>
-        <label>
-          Your photo address:{' '}
-          <input
-            type='text'
-            name='addressInput'
-            value={inputValues.addressInput}
-            onChange={fillInput}
-          />
-        </label>
-        <label>
-          Your telephone number:{' '}
-          <input
-            type='text'
-            name='telInput'
-            value={inputValues.telInput}
-            onChange={fillInput}
-          />
-        </label>
-        <label>
-          And Your Email:{' '}
-          <input
-            type='text'
-            name='emailInput'
-            value={inputValues.emailInput}
-            onChange={fillInput}
-          />
-        </label>
-        <label>
-          Tell us something about You:{' '}
-          <textarea
-            type='text'
-            name='aboutMe'
-            value={inputValues.aboutMe}
-            onChange={fillInput}
-            cols='30'
-            rows='10'
-          ></textarea>
-        </label>
-        <button onClick={useSubmit}>Submit</button>
-        <button onClick={closeDialog}>Close</button>
+        <form ref={nameRef}>
+          <label>
+            Fill your name:{' '}
+            <input
+              type='text'
+              name='nameInput'
+              value={inputValues.nameInput}
+              onChange={fillInput}
+              required
+            />
+          </label>
+          <label>
+            Your photo address:{' '}
+            <input
+              type='text'
+              name='addressInput'
+              value={inputValues.addressInput}
+              onChange={fillInput}
+            />
+          </label>
+          <label>
+            Your telephone number:{' '}
+            <input
+              type='text'
+              name='telInput'
+              value={inputValues.telInput}
+              onChange={fillInput}
+              required
+            />
+          </label>
+          <label>
+            And Your Email:{' '}
+            <input
+              type='text'
+              name='emailInput'
+              value={inputValues.emailInput}
+              onChange={fillInput}
+              required
+            />
+          </label>
+          <label className='textarea'>
+            Tell us something about You:{' '}
+            <textarea
+              type='text'
+              name='aboutMe'
+              value={inputValues.aboutMe}
+              onChange={fillInput}
+              cols='30'
+              rows='10'
+              required
+            ></textarea>
+          </label>
+          <button onClick={useSubmit}>Submit</button>
+          <button onClick={closeDialog}>Close</button>
+        </form>
       </dialog>
     </div>
   );
