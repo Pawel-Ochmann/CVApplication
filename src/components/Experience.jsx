@@ -28,8 +28,24 @@ function Experience({ activeDialog, setActiveDialog }) {
     id: '',
   });
 
-  const [jobs, setJobs] = useState([]);
-
+  const [jobs, setJobs] = useState([
+    {
+      name: 'Senior Frontend Developer',
+      start: '2022-01',
+      end: '2023-06',
+      duties:
+        'Led frontend development projects, mentored junior developers, implemented complex features, and optimized website performance.',
+      id: uuidv4(),
+    },
+    {
+      name: 'Junior Frontend Developer',
+      start: '2018-03',
+      end: '2021-12',
+      duties:
+        'Developed responsive web applications, assisted in debugging and testing, collaborated with senior developers on projects.',
+      id: uuidv4(),
+    },
+  ]);
   const date = new Date();
   let month = date.getMonth() + 1;
   if (month < 10) month = 0 + month.toString();
@@ -184,16 +200,17 @@ function Experience({ activeDialog, setActiveDialog }) {
           </button>
         </form>
       </dialog>
-      <h3>Experience</h3>
+      <h2>Experience</h2>
       <div className='jobsContainer'>
         {jobs.map((job) => {
           return (
             <div className='job' key={job.id}>
-              <h4>{job.name}</h4>
-              <p>{job.start}</p>
-              <p>{job.end}</p>
-              <p>{job.duties}</p>
-              <button>
+              <p>{job.name}</p>
+              <p className='duties'>{job.duties}</p>
+              <p>
+                {job.start} - {job.end}
+              </p>
+              <button className='change'>
                 <FontAwesomeIcon
                   icon={faPenToSquare}
                   onClick={() => {
@@ -201,7 +218,7 @@ function Experience({ activeDialog, setActiveDialog }) {
                   }}
                 />
               </button>
-              <button>
+              <button className='change'>
                 <FontAwesomeIcon
                   icon={faTrash}
                   onClick={() => {
@@ -213,7 +230,7 @@ function Experience({ activeDialog, setActiveDialog }) {
           );
         })}
       </div>
-      <button onClick={openDialog}>
+      <button onClick={openDialog} className='change'>
         <FontAwesomeIcon icon={faPlus} />
       </button>
     </div>

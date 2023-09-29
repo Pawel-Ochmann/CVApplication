@@ -39,7 +39,7 @@ function Skills({ activeDialog, setActiveDialog }) {
   };
 
   return (
-    <div className='Skills'>
+    <div className='skills'>
       <dialog open={activeDialog[3]}>
         <form ref={nameRef} action=''>
           <label>
@@ -59,7 +59,7 @@ function Skills({ activeDialog, setActiveDialog }) {
           </button>
         </form>
       </dialog>
-      <h3>Skills</h3>
+      <h2>Skills</h2>
       <div className='skillsContainer'>
         {skills.map((skill) => {
           return (
@@ -77,7 +77,7 @@ function Skills({ activeDialog, setActiveDialog }) {
           );
         })}
       </div>
-      <button onClick={openDialog}>
+      <button className='change' onClick={openDialog}>
         <FontAwesomeIcon icon={faPlus} />
       </button>
     </div>

@@ -40,7 +40,7 @@ function Hobbies({ activeDialog, setActiveDialog }) {
   };
 
   return (
-    <div className='Hobbies'>
+    <div className='hobbies'>
       <dialog open={activeDialog[4]}>
         <form ref={nameRef} action=''>
           <label>

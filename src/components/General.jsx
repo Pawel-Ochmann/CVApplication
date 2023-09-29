@@ -55,11 +55,11 @@ function General({ activeDialog, setActiveDialog }) {
         className='personalPhoto'
       />
       <div className='generalBox'>
-        <h4>Tel:</h4>
+        <h2>Tel:</h2>
         <p>{values.telValue}</p>
-        <h4>Email:</h4>
+        <h2>Email:</h2>
         <p>{values.emailValue}</p>
-        <h4>About me: </h4>
+        <h2>About me: </h2>
         <p>{values.aboutMe}</p>
       </div>
 

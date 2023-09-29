@@ -16,13 +16,44 @@ function Education({ activeDialog, setActiveDialog }) {
   const maxMonth = date.getFullYear() + '-' + month;
 
   const [minMonth, setMinMonth] = useState('');
-  const [schoolList, setSchoolList] = useState([]);
+  const [pendingSchools, setPendingSchools] = useState([
+    {
+      id: '1',
+      name: 'University Name',
+      startYear: '2019-09',
+      endYear: '2023-06',
+      readOnly: true,
+    },
+    {
+      id: '2',
+      name: 'High School Name',
+      startYear: '2015-09',
+      endYear: '2019-06',
+      readOnly: true,
+    },
+  ]);
+  const [schoolList, setSchoolList] = useState([
+    {
+      id: '1',
+      name: 'University Name',
+      startYear: '2019-09',
+      endYear: '2023-06',
+      readOnly: true,
+    },
+    {
+      id: '2',
+      name: 'High School Name',
+      startYear: '2015-09',
+      endYear: '2019-06',
+      readOnly: true,
+    },
+  ]);
   const [inputValues, setInputValues] = useState({
     name: '',
     startYear: '',
     endYear: '',
   });
-  const [pendingSchools, setPendingSchools] = useState([]);
+
   const [editActive, setEditActive] = useState(0);
 
   const openDialog = () => {
@@ -37,7 +68,7 @@ function Education({ activeDialog, setActiveDialog }) {
   const useSubmit = (e) => {
     e.preventDefault();
 
-    setSchoolList([...pendingSchools]);
+    setSchoolList(sortSchools(pendingSchools));
 
     setInputValues({ name: '', startYear: '', endYear: '' });
     closeDialog();
@@ -61,7 +92,6 @@ function Education({ activeDialog, setActiveDialog }) {
     updatedSchoolList[schoolIndex] = updatedSchool;
     setPendingSchools(updatedSchoolList);
     setEditActive(schoolId);
-    console.log('edit start');
   };
   const editSchoolEnd = (schoolId) => {
     const schoolIndex = pendingSchools.findIndex((e) => {
@@ -128,33 +158,40 @@ function Education({ activeDialog, setActiveDialog }) {
     setPendingSchools(updatedSchoolList);
   };
 
+  const sortSchools = (schoolsArray) => {
+    const schoolsSorted = [...schoolsArray].sort((schoolA, schoolB) => {
+      const endDateA = new Date(schoolA.endYear);
+      const endDateB = new Date(schoolB.endYear);
+
+      // Compare the end dates in descending order
+      if (endDateA < endDateB) {
+        return 1;
+      } else if (endDateA > endDateB) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+    return schoolsSorted;
+  };
+
   const nameRef = useRef(null);
 
   return (
     <div className='education'>
-      <table>
-        <h3>Education</h3>
-        <thead>
-          <tr>
-            <th>School</th>
-            <th>Start</th>
-            <th>Finished</th>
-          </tr>
-        </thead>
-        <tbody>
-          {schoolList.map((school) => {
-            return (
-              <tr key={school.id}>
-                <td>{school.name}</td>
-                <td>{school.startYear}</td>
-                <td>{school.endYear}</td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-      <button onClick={openDialog}>
-        <FontAwesomeIcon icon={faPlus} />
+      <h2>Education</h2>
+      {schoolList.map((school) => {
+        return (
+          <div className='school' key={school.id}>
+            <p>{school.name}</p>
+            <p>
+              {school.startYear} - {school.endYear}
+            </p>
+          </div>
+        );
+      })}
+      <button className='change' onClick={openDialog}>
+        <FontAwesomeIcon icon={faPenToSquare} />
       </button>
       <dialog open={activeDialog[1]}>
         {pendingSchools.map((school) => {
