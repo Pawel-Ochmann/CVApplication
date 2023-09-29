@@ -26,14 +26,15 @@ function Main() {
   return (
     <main>
       <General activeDialog={activeDialog} setActiveDialog={setActiveDialog} />
-      <Education
-        activeDialog={activeDialog}
-        setActiveDialog={setActiveDialog}
-      />
       <Experience
         activeDialog={activeDialog}
         setActiveDialog={setActiveDialog}
       />
+      <Education
+        activeDialog={activeDialog}
+        setActiveDialog={setActiveDialog}
+      />
+
       <Skills activeDialog={activeDialog} setActiveDialog={setActiveDialog} />
       <Hobbies activeDialog={activeDialog} setActiveDialog={setActiveDialog} />
     </main>

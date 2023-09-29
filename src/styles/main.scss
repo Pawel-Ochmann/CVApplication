@@ -10,11 +10,16 @@
 
 :root {
   --color-accent__main: grey;
-  --color-accent__secondary: rgb(66, 66, 66);
+  --color-accent__secondary: rgb(161, 161, 161);
   --color-font__main: black;
   --color-font__secondary: grey;
 }
 
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
 body {
   font-family: 'font-main', sans-serif;
   color: var(--color-font__main);
@@ -36,9 +41,65 @@ h1 {
 }
 
 main {
+  aspect-ratio: 210 / 297;
   width: 80%;
   margin: 0 auto;
   border: 2px solid grey;
+  display: grid;
+  grid-template-columns: 30% 70%;
+}
+
+button.change {
+  padding: 0.5rem;
+  cursor: pointer;
+  border: 2px solid var(--color-accent__main);
+  background-color: rgb(212, 212, 212);
+  color: var(--color-accent__main);
+  transition: 0.5s;
+  & svg {
+    transition: 0.5s;
+  }
+  &:hover {
+    & svg {
+      transform: scale(1.5);
+    }
+  }
+}
+.general {
+  position: relative;
+  grid-row: span 5;
+  grid-column: 1;
+  background-color: var(--color-accent__main);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  padding: 1.2rem;
+  h1 {
+    text-align: left;
+    width: min-content;
+    font-size: 1.8rem;
+    align-self: start;
+  }
+  p {
+    font-size: 0.8rem;
+  }
+  .generalBox {
+    margin-top: 2rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+    h4 {
+      margin-top: 2rem;
+    }
+  }
+  & > button {
+    position: absolute;
+    left: -70px;
+    top: 20px;
+  }
 }
 
 dialog[open] {
@@ -89,18 +150,19 @@ input[name='name'] {
 
 @media print {
   @page {
-    margin:0;
+    margin: 0;
   }
 
   main {
-    border:none;
+    border: none;
   }
 
   * {
     overflow: hidden;
   }
 
-  header, footer {
+  header,
+  footer {
     display: none;
   }
 

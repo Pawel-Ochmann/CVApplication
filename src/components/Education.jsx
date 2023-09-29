@@ -133,7 +133,7 @@ function Education({ activeDialog, setActiveDialog }) {
   return (
     <div className='education'>
       <table>
-        <caption>Education</caption>
+        <h3>Education</h3>
         <thead>
           <tr>
             <th>School</th>
@@ -154,7 +154,7 @@ function Education({ activeDialog, setActiveDialog }) {
         </tbody>
       </table>
       <button onClick={openDialog}>
-        <FontAwesomeIcon icon={faPenToSquare} />
+        <FontAwesomeIcon icon={faPlus} />
       </button>
       <dialog open={activeDialog[1]}>
         {pendingSchools.map((school) => {

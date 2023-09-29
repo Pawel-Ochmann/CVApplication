@@ -3,18 +3,22 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 
 // eslint-disable-next-line react/prop-types
-function General({activeDialog, setActiveDialog}) {
+function General({ activeDialog, setActiveDialog }) {
   const [values, setValues] = useState({
-    nameValue: 'Name',
-    telValue: '',
-    emailValue: '',
+    nameValue: 'Jan Kowalski',
+    telValue: '022-222-22-22',
+    emailValue: 'kowalski@gmail.com',
     addressValue: './face.png',
+    aboutMe:
+      'I am a motivated and dedicated professional with a passion for programming. I am committed to achieving excellence in every project I undertake. Always cheerful and open to new experiences.',
   });
   const [inputValues, setInputValues] = useState({
-    nameInput: '',
-    telInput: '',
-    emailInput: '',
+    nameInput: 'Jan Kowalski',
+    telInput: '022-222-22-22',
+    emailInput: 'kowalski@gmail.com',
     addressInput: '',
+    aboutMe:
+      'I am a motivated and dedicated professional with a passion for programming. I am committed to achieving excellence in every project I undertake. Always cheerful and open to new experiences.',
   });
 
   const fillInput = (e) => {
@@ -38,20 +42,28 @@ function General({activeDialog, setActiveDialog}) {
       telValue: inputValues.telInput,
       emailValue: inputValues.emailInput,
       addressValue: inputValues.addressInput,
+      aboutMe: inputValues.aboutMe,
     });
   };
 
   return (
     <div className='general'>
       <h1>{values.nameValue}</h1>
-      <p>Tel: {values.telValue}</p>
-      <p>Email: {values.emailValue}</p>
       <img
         src={values.addressValue}
         alt="Sorry, we couldn't fetch your photo"
         className='personalPhoto'
       />
-      <button onClick={openDialog}>
+      <div className='generalBox'>
+        <h4>Tel:</h4>
+        <p>{values.telValue}</p>
+        <h4>Email:</h4>
+        <p>{values.emailValue}</p>
+        <h4>About me: </h4>
+        <p>{values.aboutMe}</p>
+      </div>
+
+      <button className='change' onClick={openDialog}>
         <FontAwesomeIcon icon={faPenToSquare} />
       </button>
       <dialog open={activeDialog[0]}>
@@ -61,6 +73,15 @@ function General({activeDialog, setActiveDialog}) {
             type='text'
             name='nameInput'
             value={inputValues.nameInput}
+            onChange={fillInput}
+          />
+        </label>
+        <label>
+          Your photo address:{' '}
+          <input
+            type='text'
+            name='addressInput'
+            value={inputValues.addressInput}
             onChange={fillInput}
           />
         </label>
@@ -83,13 +104,15 @@ function General({activeDialog, setActiveDialog}) {
           />
         </label>
         <label>
-          Your photo address:{' '}
-          <input
+          Tell us something about You:{' '}
+          <textarea
             type='text'
-            name='addressInput'
-            value={inputValues.addressInput}
+            name='aboutMe'
+            value={inputValues.aboutMe}
             onChange={fillInput}
-          />
+            cols='30'
+            rows='10'
+          ></textarea>
         </label>
         <button onClick={useSubmit}>Submit</button>
         <button onClick={closeDialog}>Close</button>
