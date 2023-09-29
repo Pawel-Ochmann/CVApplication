@@ -186,6 +186,27 @@ button.change {
     right: -60px;
     top: 5px;
   }
+  .skillsContainer {
+    position: relative;
+    padding: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .skill {
+    position: relative;
+    list-style-type: disc;
+    list-style-position: inside;
+
+    & > .change {
+      right: -76px;
+      top: -10px;
+    }
+    li {
+      font-weight: bold;
+      color: var(--color-accent__main);
+    }
+  }
 }
 
 dialog[open] {

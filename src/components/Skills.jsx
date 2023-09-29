@@ -6,7 +6,11 @@ import { v4 as uuidv4 } from 'uuid';
 // eslint-disable-next-line react/prop-types
 function Skills({ activeDialog, setActiveDialog }) {
   const [pendingSkill, setPendingSkill] = useState('');
-  const [skills, setSkills] = useState([]);
+  const [skills, setSkills] = useState([
+    { id: uuidv4(), skill: 'Driving license, category "B"' },
+    { id: uuidv4(), skill: 'Fluent in Polish' },
+    { id: uuidv4(), skill: 'Riding horses' },
+  ]);
 
   const nameRef = useRef('');
 
@@ -63,9 +67,9 @@ function Skills({ activeDialog, setActiveDialog }) {
       <div className='skillsContainer'>
         {skills.map((skill) => {
           return (
-            <div className='skill' key={skill.id}>
-              <p>{skill.skill}</p>
-              <button>
+            <ul className='skill' key={skill.id}>
+              <li>{skill.skill}</li>
+              <button className='change'>
                 <FontAwesomeIcon
                   icon={faTrash}
                   onClick={() => {
@@ -73,7 +77,7 @@ function Skills({ activeDialog, setActiveDialog }) {
                   }}
                 />
               </button>
-            </div>
+            </ul>
           );
         })}
       </div>
